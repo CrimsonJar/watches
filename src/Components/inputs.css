@@ -1,0 +1,12 @@
+.inputsDiscription {
+  display: flex;
+  /* margin-bottom: 10px; */
+}
+.inputsDiscription > p:first-of-type {
+  left: 10px;
+  position: relative;
+}
+.inputsDiscription > p:nth-of-type(2) {
+  left: 130px;
+  position: relative;
+}

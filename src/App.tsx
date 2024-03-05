@@ -1,26 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
+import moment from "moment";
+import "moment-timezone";
+
+import "./App.css";
+import Watches from "./Components/watches";
+import Inputs from "./Components/inputs";
+
+type WatchesData = {
+  id: number;
+  name: string;
+  timezone: string;
+};
+const App: React.FC = () => {
+  const [watchesList, setWatchesList] = useState<WatchesData[]>([]);
+  const [idCounter, setIdCounter] = useState(0);
+
+  const handleAddWatches = (name: string, timezone: string) => {
+    const offset = parseInt(timezone);
+    const currentTime = moment().utcOffset(offset * 60);
+    const newWatches: WatchesData = {
+      id: idCounter,
+      name,
+      timezone: currentTime.format("h:mm:ss A"),
+    };
+    setIdCounter(idCounter + 1);
+    setWatchesList((prevWatchesList) => [...prevWatchesList, newWatches]);
+  };
+
+  const handleRemove = (id: number) => {
+    setWatchesList((prevWatchesList) =>
+      prevWatchesList.filter((watch) => watch.id !== id)
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <Inputs onAddWatches={handleAddWatches} />
+      {watchesList.map((watch) => (
+        <Watches
+          key={watch.id}
+          name={watch.name}
+          timezone={watch.timezone}
+          onDelete={() => handleRemove(watch.id)}
+        />
+      ))}
     </div>
   );
-}
+};
 
 export default App;
