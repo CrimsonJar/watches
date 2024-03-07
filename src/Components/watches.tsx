@@ -9,6 +9,7 @@ type WatchesProps = {
 
 const Watches: React.FC<WatchesProps> = ({ name, timezone, onDelete }) => {
   const offset = parseInt(timezone); // Преобразование строки в число
+
   const [currentTime, setCurrentTime] = useState(
     moment()
       .utcOffset(offset * 60)
@@ -29,11 +30,13 @@ const Watches: React.FC<WatchesProps> = ({ name, timezone, onDelete }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timezone]);
+  }, [offset, timezone]);
 
   return (
     <div>
-      <h2>{name}</h2>
+      <h2>
+        Название: {name} (TZ:{timezone})
+      </h2>
       <p>Текущее время: {currentTime}</p>
       <button onClick={handleRemove}>❌</button>
     </div>

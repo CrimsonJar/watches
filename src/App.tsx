@@ -17,12 +17,10 @@ const App: React.FC = () => {
   const [idCounter, setIdCounter] = useState(0);
 
   const handleAddWatches = (name: string, timezone: string) => {
-    const offset = parseInt(timezone);
-    const currentTime = moment().utcOffset(offset * 60);
     const newWatches: WatchesData = {
       id: idCounter,
       name,
-      timezone: currentTime.format("h:mm:ss A"),
+      timezone: timezone,
     };
     setIdCounter(idCounter + 1);
     setWatchesList((prevWatchesList) => [...prevWatchesList, newWatches]);
